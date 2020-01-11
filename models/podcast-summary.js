@@ -14,12 +14,13 @@ export default class PodcastSummary {
 			}
 		} else if (raw && raw.listennotes_url) {
 			this.id = raw.id;
-			this.name = raw.title_original;
-			this.author = raw.publisher_original;
+			this.name = raw.title_original || raw.title;
+			this.author = raw.publisher_original || raw.publisher;
 			this.description = raw.description_original;
 			this.cover = raw.thumbnail;
 			this.releaseDate = raw.earliest_pub_date_ms;
 			this.lastEpisodeDate = raw.latest_pub_date_ms;
+			this.totalEpisodes = raw.total_episodes;
 		}
 	}
 

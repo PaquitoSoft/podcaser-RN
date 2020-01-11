@@ -3,14 +3,19 @@ import { View, StyleSheet, FlatList } from 'react-native';
 
 import PodcastSummary from './PodcastSummary';
 
-function PodcastsSummaryGrid({ podcasts }) {
+function PodcastsSummaryGrid({ podcasts, onPress }) {
 	return (
 		<View style={styles.container}>
 			<FlatList
 				data={podcasts}
 				numColumns={2}
 				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => <PodcastSummary summary={item} />}
+				renderItem={({ item }) =>
+					<PodcastSummary
+						summary={item}
+						onPress={() => onPress(item)}
+					/>
+				}
 			/>
 		</View>
 	);
@@ -19,8 +24,7 @@ function PodcastsSummaryGrid({ podcasts }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-	paddingTop: 30
+    backgroundColor: '#fff'
   }
 });
 

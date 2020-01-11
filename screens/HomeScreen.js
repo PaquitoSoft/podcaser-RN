@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
 
 import { getAllPodcasts } from '../api/podcaster';
+import { getBestPodcasts } from '../api/listen-notes';
 
 import {
   Image,
@@ -15,35 +16,31 @@ import {
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
+import PodcastsSummaryGrid from '../components/PodcastsSummaryGrid';
 import PodcastSummary from '../components/PodcastSummary';
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
 	const [podcasts, setPodcasts] = useState([]);
 	useEffect(() => {
-		getAllPodcasts().then(podcasts => setPodcasts(podcasts));
+		getBestPodcasts().then(podcasts => setPodcasts(podcasts));
 	}, []);
 
 	return (
-		<View style={styles.container}>
-			<FlatList
-				data={podcasts}
-				numColumns={2}
-				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => <PodcastSummary summary={item} />}
+		<View style={styles.gridContainer}>
+			<PodcastsSummaryGrid
+				podcasts={podcasts}
+				onPress={(podcastSummary) => navigation.navigate('PodcastDetail', { summary: podcastSummary })}
 			/>
 		</View>
 	);
 }
 
-const _styles = StyleSheet.create({
-  container: {
-    flex: 1,
-	flexDirection: 'column',
-	// alignContent: 'stretch',
-	flexWrap: 'wrap',
-	backgroundColor: '#fff',
-	paddingTop: 0
-  },
+const styles = StyleSheet.create({
+	gridContainer: {
+		flex: 1,
+	    backgroundColor: '#fff',
+		paddingTop: 35
+	}
 });
 
 
@@ -144,11 +141,11 @@ function handleHelpPress() {
   );
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-	paddingTop: 30
+	paddingTop: 35
   },
   developmentModeText: {
     marginBottom: 20,

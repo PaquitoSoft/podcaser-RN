@@ -36,3 +36,20 @@ export async function searchPodcasts({ searchTerm }) {
 
 	return result.results.map(raw => new PodcastSummary(raw));
 }
+
+export async function getBestPodcasts() {
+	const query = {
+		genre_id: 134,
+		page: 1
+	};
+
+	const result = await getData({
+		url: `${BASE_URL}/best_podcasts?${stringify(query)}`,
+		requestOptions: { headers: { 'X-ListenAPI-Key': API_KEY } },
+		cacheOptions: {
+			defaultTtl: ONE_DAY
+		}
+	});
+
+	return result.podcasts.map(raw => new PodcastSummary(raw));
+}

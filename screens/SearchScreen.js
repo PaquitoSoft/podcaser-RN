@@ -9,9 +9,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { searchPodcasts } from '../api/listen-notes';
 
+import PodcastsSummaryGrid from '../components/PodcastsSummaryGrid';
 import Colors from '../constants/Colors';
 
-function SearchScreen() {
+function SearchScreen({ navigation }) {
 	const [searchResults, setSearchResults] = useState([]);
 
 	const onSearchSubmit = async ({ nativeEvent }) => {
@@ -39,9 +40,15 @@ function SearchScreen() {
 			      color={Colors.tabIconDefault}
 			    />
 			</View>
-			<View style={styles.searchResultsContainer}>
-				<Text>Search results: {searchResults.length}</Text>
-			</View>
+			{
+				searchResults.length > 0 &&
+				<View style={styles.searchResultsContainer}>
+					<PodcastsSummaryGrid
+						podcasts={searchResults}
+						onPress={(podcastSummary) => navigation.navigate('PodcastDetail', { summary: podcastSummary })}
+					/>
+				</View>
+			}
 		</View>
 	);
 }
@@ -51,10 +58,11 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flex: 1,
 		alignItems: 'center',
-		padding: 15
+		padding: 5
 	},
 	searchFormContainer: {
 		display: 'flex',
+		marginTop: 10,
 		width: '80%',
 		flexDirection: 'row'
 	},
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
 		flex: 11,
 		fontSize: 24,
 		borderRadius: 20,
-		paddingLeft: 10,
+		paddingLeft: 15,
 		backgroundColor: '#eee',
 		height: 40
 	},
@@ -72,7 +80,9 @@ const styles = StyleSheet.create({
 		paddingTop: 8
 	},
 	searchResultsContainer: {
-		marginTop: 15
+		marginTop: 10,
+		width: '100%',
+		flex: 1
 	}
 });
 

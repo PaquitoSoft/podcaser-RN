@@ -10,20 +10,29 @@ import SettingsScreen from '../screens/SettingsScreen';
 import SearchScreen from '../screens/SearchScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import PlayerScreen from '../screens/PlayerScreen';
+import PodcastDetailScreen from '../screens/PodcastDetailScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
 });
 
-function buildStackNavigator({ label, screen, iconName, path = '' }) {
+function buildStackNavigator({ label, screens, iconName, path = '' }) {
+	const _screens = screens.reduce((result, { label, screen }) => {
+		result[label] = screen;
+		return result;
+	}, {});
+	console.log(_screens);
 	const Stack = createStackNavigator(
-	  { [label]: screen },
+	  screens.reduce((result, { label, screen }) => {
+		  result[label] = screen;
+		  return result;
+	  }, {}),
 	  config
 	);
 
 	Stack.navigationOptions = {
-	  tabBarLabel: label,
+	  tabBarLabel: screens[0].label,
 	  tabBarIcon: ({ focused }) => (
 	    <TabBarIcon
 	      focused={focused}
@@ -36,27 +45,34 @@ function buildStackNavigator({ label, screen, iconName, path = '' }) {
 	return Stack;
 }
 
+
 const HomeStack = buildStackNavigator({
-	label: 'Home',
-	screen: HomeScreen,
+	screens: [
+		{ label: 'Home', screen: HomeScreen },
+		{ label: 'PodcastDetail', screen: PodcastDetailScreen }
+	],
 	iconName: 'apps'
 });
 
 const SearchStack = buildStackNavigator({
-	label: 'Search',
-	screen: SearchScreen,
+	screens: [
+		{ label: 'Search', screen: SearchScreen },
+		{ label: 'PodcastDetail', screen: PodcastDetailScreen }
+	],
 	iconName: 'search'
 });
 
 const FavoritesStack = buildStackNavigator({
-	label: 'Favorites',
-	screen: FavoritesScreen,
+	screens: [
+		{ label: 'Favorites', screen: FavoritesScreen }
+	],
 	iconName: 'star'
 });
 
 const PlayerStack = buildStackNavigator({
-	label: 'Player',
-	screen: PlayerScreen,
+	screens: [
+		{ label: 'Player', screen: PlayerScreen }
+	],
 	iconName: 'play-circle'
 });
 
