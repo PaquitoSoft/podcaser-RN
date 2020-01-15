@@ -11,13 +11,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  FlatList
+  View
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
 import PodcastsSummaryGrid from '../components/PodcastsSummaryGrid';
-import PodcastSummary from '../components/PodcastSummary';
 
 function HomeScreen({ navigation }) {
 	const [podcasts, setPodcasts] = useState([]);
