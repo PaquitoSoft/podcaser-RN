@@ -1,6 +1,7 @@
 import { stringify } from 'query-string';
 import { getData } from '../plugins/requester';
 import PodcastSummary from '../models/podcast-summary';
+import Episode from '../models/episode';
 
 const BASE_URL = 'https://listen-api.listennotes.com/api/v2';
 const API_KEY = '';
@@ -52,4 +53,16 @@ export async function getBestPodcasts() {
 	});
 
 	return result.podcasts.map(raw => new PodcastSummary(raw));
+}
+
+export async function getPodcastEpisodes(podcastId) {
+	const result = await getData({
+		url: `${BASE_URL}/podcasts/${podcastId}`,
+		requestOptions: { headers: { 'X-ListenAPI-Key': API_KEY } },
+		cacheOptions: {
+			defaultTtl: ONE_DAY
+		} 
+	});
+
+	return result.episodes.map(raw => new Episode(raw));
 }
